@@ -1,0 +1,64 @@
+@back 背景1 pos:50,50,100
+;默认的位置是50，50,100
+@bgm bgm1
+@input name summary:"请输入你的名字" value:"缘去花落" play:true
+@stop
+@spawn Snow
+pangbai: 住在内陆城市的{name}抬头望向天空
+{name}: 没想到才12月初就开始下雪了啊... 
+pangbai: 雪花无声飘落在{name}的肩膀上，似乎在预示着什么一样...
+pangbai: 这时候从远处突然跑过来一个身影...
+@char fszy.blackfox scale:0.1 pos:48,30,0 look:left wait:false
+;这里先出现fszy的0.1倍大小的模型，然后微调确定出现的pos，50，50是xy居中，0刚好和音乐默认位置对齐
+@animate fszy scale:1 time:4 posY:0
+;这里我们进行动画的角色大小变化实现模型从远到近的观感，然后用posY微调角色移动后的上下位置
+pangbai: 还没等你反应过来，她就先开口了。
+fszy: suki,{name}
+@back none.Ripple wait:false
+@despawn Snow wait:false 
+pangbai: 此时此刻，你眼中的世界仿佛只有她一人。 
+@choice 我也喜欢你  goto:script.1
+@choice 我爱你      goto:script.2     
+@stop
+;@animate fszy appearance:blackfox transition:DropFade time:1 进行表情立绘的切换，转换的样式为DropFade，时间设定为1s
+;@animate fszy tint:#aa6666 time:1 对角色整体进行颜色变化，tint后面指定变换以后的颜色，可使用rgb或设定好的如red等
+;@animate fszy posX:15|50 easing:EaseInBack time:1|1  表示函数曲线，两个位置的设定移动和指定移动时常
+;@set np="-5|0"
+;@set nt="0.2|0.2"
+;@animate fszy posY:np time:nt
+;@arrange 实现多个char在屏幕中平均分配
+;@back 背景1 pos:x,y,z  默认x，y是50即居中
+;@bgm bgm1 volume:0.5 loop:false fade:1.0 intro:bgm2  先播放bgm2一次，然后转折到bgm1，loop表示不循环
+;@camera offset:10,10  偏移  roll:45 旋转 zoom:0.5 缩放 ortho:false 变成透视摄像头 默认是true 同时支持time和easing设置移动的曲线效果和时间
+;@spawn Snow  加预制体特效 @despawn Snow 进行删除对应名字的预制体特效
+;@gosub script.a   临时的跳转
+;回到这
+;#a
+;先到这
+;@return
+;@hidePrinter 隐藏对话框 @hideUI 隐藏ui界面 @hideChars 隐藏所有角色 @hideAll隐藏所有
+;@input name summary:"请输入你的名字" value:"缘去花落" play:true
+;@stop 这样使得我们要先输入名字才能继续后续代码
+;@loadScene 加载下一个场景
+;@movie 播放影片
+;@save  将游戏放入自动保存槽
+;@set a=Random(0,100) 可以set一个0到100中间的随机数且每次都不同
+;@purgeRollback 可以把这个放在随机数前使得玩家获得随机数以后不能回滚
+;@title 可以直接回到标题页面
+
+#1
+@purgeRollback
+@set np="-5|0"
+@set nt="0.2|0.2"
+@animate fszy posY:{np} time:{nt} wait:false
+@char fszy.blackfox wait:false
+;为了让上下这两个语句同时实现，我们可以加入wait:false，使上两句和下面的一句对话直接一起出来，否则会在实现动画以后略微延迟才出现对话
+fszy: 嗯...要一辈子给我打钱哦~
+@stop
+
+#2
+@purgeRollback
+pangbai: 突然她的身上发出了耀眼的白光...
+@char fszy.whitefox transition:Ripple
+fszy: 嗯...要一辈子跟我在一起哦~
+@stop

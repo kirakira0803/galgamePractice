@@ -1,0 +1,21 @@
+#start
+now going to show the calendar.
+@showUI Calendar
+1
+@set day=12;month=1
+2
+@set day++
+3
+@set month=2
+4
+@hideUI Calendar
+5
+@showUI Calendar
+6
+#loop
+@set month++
+@set month=1 if:month>12
+next month.
+@goto .loop
+
+@stop
